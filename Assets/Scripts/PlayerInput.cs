@@ -31,7 +31,7 @@ public class PlayerInput : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        IsJumpPressed = context.performed; // work on jump not being continous, onButtonDown like cs
+        IsJumpPressed = context.performed; // work on jump not being continous, onButtonDown so you can't easily repeat jumps
     }
 
     public void OnCrouch(InputAction.CallbackContext context)
@@ -46,6 +46,7 @@ public class PlayerInput : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
+        // work on this also not being holdable
         if (context.performed && Time.time > _lastDashTime + _dashCooldown)
         {
             IsDashPressed = true;
