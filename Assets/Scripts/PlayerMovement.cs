@@ -20,10 +20,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpHeight = 1f;
     [SerializeField] private float gravity = -9.81f;
 
+    [SerializeField] private float dashSpeed = 30f; // speed of the dash
+    [SerializeField] private float dashDuration = 0.2f; // duration of the dash
+
     private PlayerInput playerInput;
     private PlayerState playerState;
     private Vector3 velocity;
     private float currentSpeed;
+
+    private bool _isDashing = false; // track if the player is currently dashing
+    private float _dashEndTime; // time when the dash ends
+    private Vector3 _dashDirection; // direction of the dash
 
     private void Awake()
     {
@@ -36,18 +43,31 @@ public class PlayerMovement : MonoBehaviour
     {
         SetSpeed();
         HandleMovement();
+        HandleDash();
         HandleJump();
     }
 
     private void HandleMovement()
     {
-        if (playerState.IsOnLadder)
+        if (_isDashing)
         {
-            HandleLadderMovement();
+            // sets dashing and reduces timer, can't use movement buttons whilst dashing
+            characterController.Move(_dashDirection * dashSpeed * Time.deltaTime);
+            if (Time.time >= _dashEndTime)
+            {
+                _isDashing = false; // End the dash
+            }
         }
         else
         {
-            HandleGroundAndAirMovement();
+            if (playerState.IsOnLadder)
+            {
+                HandleLadderMovement();
+            }
+            else
+            {
+                HandleGroundAndAirMovement();
+            }
         }
     }
 
@@ -90,6 +110,36 @@ public class PlayerMovement : MonoBehaviour
         // display speed in console for testing
         float speed = new Vector3(move.x * currentSpeed, 0, move.z * currentSpeed).magnitude;
         //Debug.Log($"Current Speed: {speed:F2} m/s");
+    }
+
+    private void HandleDash()
+    {
+        if (playerInput.IsDashPressed && !_isDashing)
+        {
+            StartDash();
+        }
+    }
+
+    private void StartDash()
+    {
+        _isDashing = true;
+        _dashEndTime = Time.time + dashDuration;
+
+        // Calculate dash direction based on movement input
+        _dashDirection = transform.right * playerInput.MoveInput.x + transform.forward * playerInput.MoveInput.y;
+
+        // Normalize the direction to ensure consistent dash speed
+        if (_dashDirection.magnitude > 0)
+        {
+            _dashDirection.Normalize();
+        }
+        else
+        {
+            // If no movement input, dash forward
+            _dashDirection = transform.forward;
+        }
+
+        Debug.Log("Dashing in direction: " + _dashDirection);
     }
 
     private void HandleLadderMovement()

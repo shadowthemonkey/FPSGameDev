@@ -14,6 +14,10 @@ public class PlayerInput : MonoBehaviour
     public bool IsWalkPressed { get; private set; }
     public bool IsDashPressed { get; private set; }
 
+    // dash cooldown variables, if it stays a cooldown instead of a finite amount purchased per round
+    private float _dashCooldown = 5f; // cooldown duration in seconds
+    private float _lastDashTime = -Mathf.Infinity; // time when the last dash occurred
+
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -42,6 +46,14 @@ public class PlayerInput : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        IsDashPressed = context.performed;
+        if (context.performed && Time.time > _lastDashTime + _dashCooldown)
+        {
+            IsDashPressed = true;
+            _lastDashTime = Time.time; // Update the last dash time
+        }
+        else
+        {
+            IsDashPressed = false;
+        }
     }
-}
+}   

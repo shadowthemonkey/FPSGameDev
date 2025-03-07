@@ -627,7 +627,19 @@ MonoBehaviour:
     m_ActionId: 0c07e080-c4b1-43a6-a9e8-f1df4e6f7e8a
     m_ActionName: gameplay/c4[/Keyboard/4]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1055692043}
+        m_TargetAssemblyTypeName: PlayerInput, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ab615a01-3073-47da-a6e4-c425ce1300bd
     m_ActionName: gameplay/abilityDashF[/Keyboard/f]
   - m_PersistentCalls:
@@ -767,6 +779,8 @@ MonoBehaviour:
   ladderClimbSpeed: 3
   jumpHeight: 1
   gravity: -9.81
+  dashSpeed: 12.5
+  dashDuration: 0.5
 --- !u!1 &1745146706
 GameObject:
   m_ObjectHideFlags: 0
