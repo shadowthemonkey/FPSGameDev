@@ -6,21 +6,22 @@ competitive bomb defusal rounds, tie at 12:12 win at 13 (mr12), etc (maybe add d
 csgo-like movement, with crouch, shift walk, bhop, etc.
 guns and utility work like counterstrike with an ingame currency based on kills and rounds
 
-might have movement differences and new abilities to differentiate the game from just being a copy (Think about this over the lab)
-PUT A SPIN ON IT
+might have movement differences and new abilities to differentiate the game from just being a copy, put a spin on it
 
 - new weapons (rocket launchers, bows with grenades attached), 
 - dashing? xray grenade + other util teleporting? 
 - MAYBE make it more movement intensive (but bots need to be able to work)
 
-feedback: it needs a spin to make it more unique (new abilities that aren't in counterstrike)
-	  they gave orders of what I should work on first (focus on movement and shooting first)
-	  multiplayer can be really hard maybe limit to 1v1 or so, less complexity
-	  be careful with scope creep
-	  bots can be added, but it might be too complex to implement bots that use abilities, maybe they stick to map traversal and aim/shooting
+feedback: 
+
+- it needs a spin to make it more unique (new abilities that aren't in counterstrike)
+- they gave orders of what I should work on first (focus on movement and shooting first)
+- multiplayer can be really hard maybe limit to 1v1 or so, less complexity
+- be careful with scope creep
+- bots can be added, but it might be too complex to implement bots that use abilities, maybe they stick to map traversal and aim/shooting
 
 
-Order of what I should work on: 			get the first 2 elements working with models and animations, maybe have some early AI and/or GUI
+Order of what I should work on: 	get the first 2 elements working with models and animations, maybe have some early AI and/or GUI
 
 - movement (cs style)
 - shooting (spray patterns, spread, movement inaccuracy, etc) and (movement) abilities (the SPIN ON IT) (wallbangs maybe?)
