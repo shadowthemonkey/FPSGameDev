@@ -15,6 +15,7 @@ public class PlayerCrouch : MonoBehaviour
 
     private void Awake()
     {
+        // components needed
         playerInput = GetComponent<PlayerInput>();
         playerState = GetComponent<PlayerState>();
         characterController = GetComponent<CharacterController>();
@@ -42,6 +43,8 @@ public class PlayerCrouch : MonoBehaviour
 
     private void SmoothCrouchTransition()
     {
+        // prevents the character height from instantly going from standing height to crouch height and vice versa
+        //lerp
         characterController.height = Mathf.Lerp(characterController.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
     }
 }

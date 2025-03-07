@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 
     // for simplicity, player jumping is also in this script, so that air strafing has a clearer implementation
 
+    // another movement related feature is the dash ability, so it is located here too
+
     [SerializeField] private CharacterController characterController;
     [SerializeField] private float moveSpeed = 4.2f;
     [SerializeField] private float walkSpeed = 2f;

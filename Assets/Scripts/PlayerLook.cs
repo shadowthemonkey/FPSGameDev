@@ -5,7 +5,7 @@ public class PlayerLook : MonoBehaviour
     // this script is used for the first person camera control
 
     [SerializeField] private Transform playerCamera;
-    [SerializeField] private float lookSensitivity = 0.5f;
+    [SerializeField] private float lookSensitivity = 0.5f; // serialized, can possibily be altered in a settings menu later on
     [SerializeField] private float lookXLimit = 90f;
 
     private PlayerInput playerInput;
@@ -15,12 +15,12 @@ public class PlayerLook : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         Cursor.lockState = CursorLockMode.Locked; // locks cursor for FPS control
-        Cursor.visible = false;
+        Cursor.visible = false; //cursor is locked in the centre and invisible
     }
 
     private void Update()
     {
-        HandleLook();
+        HandleLook(); // calls look method
     }
 
     private void HandleLook()

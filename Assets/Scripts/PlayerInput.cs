@@ -12,6 +12,8 @@ public class PlayerInput : MonoBehaviour
     public bool IsJumpPressed { get; private set; }
     public bool IsCrouchPressed { get; private set; }
     public bool IsWalkPressed { get; private set; }
+    public bool IsDashPressed { get; private set; }
+
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -36,5 +38,10 @@ public class PlayerInput : MonoBehaviour
     public void OnWalk(InputAction.CallbackContext context)
     {
         IsWalkPressed = context.performed;
+    }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        IsDashPressed = context.performed;
     }
 }
