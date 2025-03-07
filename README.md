@@ -9,9 +9,9 @@ guns and utility work like counterstrike with an ingame currency based on kills 
 might have movement differences and new abilities to differentiate the game from just being a copy (Think about this over the lab)
 PUT A SPIN ON IT
 
-new weapons (rocket launchers, bows with grenades attached), 
-dashing? xray grenade + other util teleporting? 
-	MAYBE make it more movement intensive (but bots need to be able to work)
+- new weapons (rocket launchers, bows with grenades attached), 
+- dashing? xray grenade + other util teleporting? 
+- MAYBE make it more movement intensive (but bots need to be able to work)
 
 feedback: it needs a spin to make it more unique (new abilities that aren't in counterstrike)
 	  they gave orders of what I should work on first (focus on movement and shooting first)
@@ -22,20 +22,12 @@ feedback: it needs a spin to make it more unique (new abilities that aren't in c
 
 Order of what I should work on: 			get the first 2 elements working with models and animations, maybe have some early AI and/or GUI
 
-movement (cs style)
-
-shooting (spray patterns, spread, movement inaccuracy, etc) and (movement) abilities (the SPIN ON IT) (wallbangs maybe?)
-
--- didn't mention models and animations, they might count as their own elements
-
-ai bots (navmeshing, then it aims, might be a bit too complex to get bots to use abilties)
-
-gui implementation (health, weapons, currency, timer, score, who is alive, etc. Basically look at counterstrike gui)
-
-make map (No pcg, I will model it)
-
-multiplayer later in case of scope creep issues (it can be a pain to implement with more users, so maybe introduce as 1v1 or maybe 2v2)
+- movement (cs style)
+- shooting (spray patterns, spread, movement inaccuracy, etc) and (movement) abilities (the SPIN ON IT) (wallbangs maybe?)
+- didn't mention models and animations, they might count as their own elements
+- ai bots (navmeshing, then it aims, might be a bit too complex to get bots to use abilties)
+- gui implementation (health, weapons, currency, timer, score, who is alive, etc. Basically look at counterstrike gui)
+- make map (No pcg, I will model it)
+- multiplayer later in case of scope creep issues (it can be a pain to implement with more users, so maybe introduce as 1v1 or maybe 2v2)
 
 reward with xp || skins (if possible, easiest choice might be unlocking recolours of weapons)
-
-look at brief to make a report and whatnot
