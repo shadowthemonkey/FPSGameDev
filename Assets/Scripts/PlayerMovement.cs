@@ -11,9 +11,9 @@ public class PlayerMovement : MonoBehaviour
     // another movement related feature is the dash ability, so it is located here too
 
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private float moveSpeed = 4.2f;
-    [SerializeField] private float walkSpeed = 2f;
-    [SerializeField] private float crouchSpeed = 1.5f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float walkSpeed = 2.5f;
+    [SerializeField] private float crouchSpeed = 1.75f;
     [SerializeField] private float airControl = 0.5f;
     [SerializeField] private float ladderClimbSpeed = 3f;
 

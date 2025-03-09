@@ -864,9 +864,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 1055692044}
-  moveSpeed: 4.2
-  walkSpeed: 2
-  crouchSpeed: 1.5
+  moveSpeed: 5
+  walkSpeed: 2.5
+  crouchSpeed: 1.75
   airControl: 0.5
   ladderClimbSpeed: 3
   jumpHeight: 1
