@@ -4,6 +4,8 @@ public class PlayerLadder : MonoBehaviour
 {
     // this script sets a ladder state for climbing
 
+    // TODO: add ladders lmao
+
     private PlayerState playerState;
 
     private void Awake()

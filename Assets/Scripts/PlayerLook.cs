@@ -8,14 +8,14 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float lookSensitivity = 0.5f; // serialized, can possibily be altered in a settings menu later on
     [SerializeField] private float lookXLimit = 90f;
 
-    private PlayerInput playerInput;
+    private PlayerInputs playerInput;
     private float rotationX = 0f;
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponent<PlayerInputs>();
         Cursor.lockState = CursorLockMode.Locked; // locks cursor for FPS control
-        Cursor.visible = false; //cursor is locked in the centre and invisible
+        Cursor.visible = false; // cursor is locked in the centre and invisible
     }
 
     private void Update()
@@ -23,10 +23,11 @@ public class PlayerLook : MonoBehaviour
         HandleLook(); // calls look method
     }
 
+    // function handles first person camera according to mouse input
     private void HandleLook()
     {
-        float mouseX = playerInput.LookInput.x * lookSensitivity;
-        float mouseY = playerInput.LookInput.y * lookSensitivity;
+        float mouseX = playerInput.lookInput.x * lookSensitivity;
+        float mouseY = playerInput.lookInput.y * lookSensitivity;
 
         rotationX -= mouseY;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);

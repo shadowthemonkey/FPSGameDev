@@ -8,7 +8,7 @@ public class PlayerCrouch : MonoBehaviour
     [SerializeField] private float standingHeight = 2f;
     [SerializeField] private float crouchTransitionSpeed = 8f;
 
-    private PlayerInput playerInput;
+    private PlayerInputs playerInput;
     private PlayerState playerState;
     private CharacterController characterController;
     private float targetHeight;
@@ -16,7 +16,7 @@ public class PlayerCrouch : MonoBehaviour
     private void Awake()
     {
         // components needed
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponent<PlayerInputs>();
         playerState = GetComponent<PlayerState>();
         characterController = GetComponent<CharacterController>();
     }
@@ -29,7 +29,7 @@ public class PlayerCrouch : MonoBehaviour
 
     private void HandleCrouch()
     {
-        if (playerInput.IsCrouchPressed)
+        if (playerInput.isCrouchPressed)
         {
             playerState.SetCrouching(true);
             targetHeight = crouchHeight;
@@ -45,6 +45,7 @@ public class PlayerCrouch : MonoBehaviour
     {
         // prevents the character height from instantly going from standing height to crouch height and vice versa
         //lerp
-        characterController.height = Mathf.Lerp(characterController.height, targetHeight, crouchTransitionSpeed * Time.deltaTime);
+        float currentHeight = characterController.height;
+        characterController.height = Mathf.Lerp(currentHeight, targetHeight, crouchTransitionSpeed * Time.deltaTime);
     }
 }
