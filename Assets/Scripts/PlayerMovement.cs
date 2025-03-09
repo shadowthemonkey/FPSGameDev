@@ -23,10 +23,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashSpeed = 30f; // speed of the dash
     [SerializeField] private float dashDuration = 0.2f; // duration of the dash
 
+    // input and state taken from respective scripts
     private PlayerInputs playerInput;
     private PlayerState playerState;
+
     private Vector3 velocity;
-    private float currentSpeed;
+    private float currentSpeed; // altered depending on inputs, changed in SetSpeed()
 
     private float dashEndTime; // time when the dash ends
     private Vector3 dashDirection; // direction of the dash
