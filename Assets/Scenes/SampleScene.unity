@@ -864,15 +864,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 1055692044}
-  moveSpeed: 5
+  moveSpeed: 6
   walkSpeed: 2.5
   crouchSpeed: 1.75
-  airControl: 0.5
-  ladderClimbSpeed: 3
-  jumpHeight: 1
-  gravity: -9.81
   dashSpeed: 30
   dashDuration: 0.2
+  ladderClimbSpeed: 3
+  groundAccelerate: 15
+  airAccelerate: 5
+  maxVelocityAir: 20
+  friction: 10
+  jumpHeight: 1
+  gravity: -9.81
 --- !u!1001 &1204011324
 PrefabInstance:
   m_ObjectHideFlags: 0
