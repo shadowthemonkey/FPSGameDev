@@ -234,13 +234,16 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetSpeed()
     {
-        if (playerInput.isWalkPressed)
+        // if crouch walking: set the speed to crouchSpeed
+        // if shift/slow walking: set the speed to walkSpeed
+        // if crouched and slow walking: speed is set to the slower speed (crouchSpeed)
+        if (playerInput.isCrouchPressed)
         {
-            currentSpeed = walkSpeed;
+            currentSpeed = crouchSpeed;
         }
         else
         {
-            currentSpeed = playerInput.isCrouchPressed ? crouchSpeed : moveSpeed;
+            currentSpeed = playerInput.isWalkPressed ? walkSpeed : moveSpeed;
         }
     }
 
