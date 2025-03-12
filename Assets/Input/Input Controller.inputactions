@@ -6,15 +6,6 @@
             "id": "ca012da0-d578-4ec9-b41b-c6372b8412cf",
             "actions": [
                 {
-                    "name": "shoot",
-                    "type": "Button",
-                    "id": "aa1e421d-c1ab-4023-a2d2-d6b082abd6b3",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "look",
                     "type": "Value",
                     "id": "70382c7c-5cc4-4246-a62f-76341238a23f",
@@ -72,6 +63,15 @@
                     "name": "use",
                     "type": "Button",
                     "id": "50fedd81-036f-4c57-a2bf-a73a0757afc2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "shoot",
+                    "type": "Button",
+                    "id": "aa1e421d-c1ab-4023-a2d2-d6b082abd6b3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -402,23 +402,23 @@
                 },
                 {
                     "name": "",
-                    "id": "0502004d-6e0d-4582-a5e3-2d765d5c2713",
-                    "path": "*/{PrimaryAction}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "178880f8-39ee-401c-a097-d7e7883a33c0",
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0502004d-6e0d-4582-a5e3-2d765d5c2713",
+                    "path": "*/{PrimaryAction}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

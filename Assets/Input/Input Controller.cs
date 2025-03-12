@@ -28,15 +28,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             ""id"": ""ca012da0-d578-4ec9-b41b-c6372b8412cf"",
             ""actions"": [
                 {
-                    ""name"": ""shoot"",
-                    ""type"": ""Button"",
-                    ""id"": ""aa1e421d-c1ab-4023-a2d2-d6b082abd6b3"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""look"",
                     ""type"": ""Value"",
                     ""id"": ""70382c7c-5cc4-4246-a62f-76341238a23f"",
@@ -94,6 +85,15 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""name"": ""use"",
                     ""type"": ""Button"",
                     ""id"": ""50fedd81-036f-4c57-a2bf-a73a0757afc2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa1e421d-c1ab-4023-a2d2-d6b082abd6b3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -424,23 +424,23 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0502004d-6e0d-4582-a5e3-2d765d5c2713"",
-                    ""path"": ""*/{PrimaryAction}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""178880f8-39ee-401c-a097-d7e7883a33c0"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0502004d-6e0d-4582-a5e3-2d765d5c2713"",
+                    ""path"": ""*/{PrimaryAction}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -496,7 +496,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
 }");
         // gameplay
         m_gameplay = asset.FindActionMap("gameplay", throwIfNotFound: true);
-        m_gameplay_shoot = m_gameplay.FindAction("shoot", throwIfNotFound: true);
         m_gameplay_look = m_gameplay.FindAction("look", throwIfNotFound: true);
         m_gameplay_move = m_gameplay.FindAction("move", throwIfNotFound: true);
         m_gameplay_jump = m_gameplay.FindAction("jump", throwIfNotFound: true);
@@ -504,6 +503,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         m_gameplay_crouch = m_gameplay.FindAction("crouch", throwIfNotFound: true);
         m_gameplay_dropW = m_gameplay.FindAction("dropW", throwIfNotFound: true);
         m_gameplay_use = m_gameplay.FindAction("use", throwIfNotFound: true);
+        m_gameplay_shoot = m_gameplay.FindAction("shoot", throwIfNotFound: true);
         m_gameplay_reload = m_gameplay.FindAction("reload", throwIfNotFound: true);
         m_gameplay_primary = m_gameplay.FindAction("primary", throwIfNotFound: true);
         m_gameplay_secondary = m_gameplay.FindAction("secondary", throwIfNotFound: true);
@@ -578,7 +578,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     // gameplay
     private readonly InputActionMap m_gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_gameplay_shoot;
     private readonly InputAction m_gameplay_look;
     private readonly InputAction m_gameplay_move;
     private readonly InputAction m_gameplay_jump;
@@ -586,6 +585,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     private readonly InputAction m_gameplay_crouch;
     private readonly InputAction m_gameplay_dropW;
     private readonly InputAction m_gameplay_use;
+    private readonly InputAction m_gameplay_shoot;
     private readonly InputAction m_gameplay_reload;
     private readonly InputAction m_gameplay_primary;
     private readonly InputAction m_gameplay_secondary;
@@ -600,7 +600,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     {
         private @InputController m_Wrapper;
         public GameplayActions(@InputController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @shoot => m_Wrapper.m_gameplay_shoot;
         public InputAction @look => m_Wrapper.m_gameplay_look;
         public InputAction @move => m_Wrapper.m_gameplay_move;
         public InputAction @jump => m_Wrapper.m_gameplay_jump;
@@ -608,6 +607,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         public InputAction @crouch => m_Wrapper.m_gameplay_crouch;
         public InputAction @dropW => m_Wrapper.m_gameplay_dropW;
         public InputAction @use => m_Wrapper.m_gameplay_use;
+        public InputAction @shoot => m_Wrapper.m_gameplay_shoot;
         public InputAction @reload => m_Wrapper.m_gameplay_reload;
         public InputAction @primary => m_Wrapper.m_gameplay_primary;
         public InputAction @secondary => m_Wrapper.m_gameplay_secondary;
@@ -627,9 +627,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @shoot.started += instance.OnShoot;
-            @shoot.performed += instance.OnShoot;
-            @shoot.canceled += instance.OnShoot;
             @look.started += instance.OnLook;
             @look.performed += instance.OnLook;
             @look.canceled += instance.OnLook;
@@ -651,6 +648,9 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @use.started += instance.OnUse;
             @use.performed += instance.OnUse;
             @use.canceled += instance.OnUse;
+            @shoot.started += instance.OnShoot;
+            @shoot.performed += instance.OnShoot;
+            @shoot.canceled += instance.OnShoot;
             @reload.started += instance.OnReload;
             @reload.performed += instance.OnReload;
             @reload.canceled += instance.OnReload;
@@ -685,9 +685,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @shoot.started -= instance.OnShoot;
-            @shoot.performed -= instance.OnShoot;
-            @shoot.canceled -= instance.OnShoot;
             @look.started -= instance.OnLook;
             @look.performed -= instance.OnLook;
             @look.canceled -= instance.OnLook;
@@ -709,6 +706,9 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @use.started -= instance.OnUse;
             @use.performed -= instance.OnUse;
             @use.canceled -= instance.OnUse;
+            @shoot.started -= instance.OnShoot;
+            @shoot.performed -= instance.OnShoot;
+            @shoot.canceled -= instance.OnShoot;
             @reload.started -= instance.OnReload;
             @reload.performed -= instance.OnReload;
             @reload.canceled -= instance.OnReload;
@@ -813,7 +813,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     }
     public interface IGameplayActions
     {
-        void OnShoot(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
@@ -821,6 +820,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnDropW(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnPrimary(InputAction.CallbackContext context);
         void OnSecondary(InputAction.CallbackContext context);

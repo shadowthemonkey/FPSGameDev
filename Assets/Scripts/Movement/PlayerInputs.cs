@@ -9,10 +9,10 @@ public class PlayerInputs : MonoBehaviour
     // public variables so they can be reached by the other scripts
     public Vector2 moveInput { get; private set; }
     public Vector2 lookInput { get; private set; }
-    public bool isJumpPressed { get; private set; }
-    public bool isCrouchPressed { get; private set; }
-    public bool isWalkPressed { get; private set; }
-    public bool isDashPressed { get; private set; }
+    public bool IsJumpPressed { get; private set; }
+    public bool IsCrouchPressed { get; private set; }
+    public bool IsWalkPressed { get; private set; }
+    public bool IsDashPressed { get; private set; }
 
     // dash cooldown variables, if it stays a cooldown instead of a finite amount purchased per round
     private float dashCooldown = 5f; // cooldown duration in seconds
@@ -20,11 +20,14 @@ public class PlayerInputs : MonoBehaviour
 
     private bool canJump; // track if the player can jump (must release jump button first)
 
+    // states used, one for player, one for weapons
     private PlayerState playerState;
+    private WeaponManager weaponManager;
 
     private void Awake()
     {
         playerState = GetComponent<PlayerState>();
+        weaponManager = GetComponent<WeaponManager>();
         canJump = true; // can jump initially set to true
     }
 
@@ -42,9 +45,9 @@ public class PlayerInputs : MonoBehaviour
     // this means that consistent jumps are more consistency based
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed && canJump && playerState.isGrounded)
+        if (context.performed && canJump && playerState.IsGrounded)
         {
-            isJumpPressed = true;
+            IsJumpPressed = true;
             canJump = false; // disable jumping until the button is released
         }
 
@@ -56,19 +59,58 @@ public class PlayerInputs : MonoBehaviour
     // public method called in PlayerMovement.cs
     public void ResetJump()
     {
-        isJumpPressed = false;
-    }
-
-    public void OnCrouch(InputAction.CallbackContext context)
-    {
-        isCrouchPressed = context.performed;
+        IsJumpPressed = false;
     }
 
     public void OnWalk(InputAction.CallbackContext context)
     {
-        isWalkPressed = context.performed;
+        IsWalkPressed = context.performed;
     }
 
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        IsCrouchPressed = context.performed;
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            weaponManager?.Shoot();
+        }
+    }
+
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            weaponManager?.Reload();
+        }
+    }
+
+    public void OnPrimary(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            weaponManager?.SetPrimary();
+        }
+    }
+
+    public void OnSecondary(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            weaponManager?.SetSecondary();
+        }
+    }
+
+    public void OnMelee(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            weaponManager?.SetMelee();
+        }
+    }
 
     // dash related methods
     public void OnDash(InputAction.CallbackContext context)
@@ -77,7 +119,7 @@ public class PlayerInputs : MonoBehaviour
         // this prevents holding down the button to dash indefinitely
         if (context.performed && Time.time >= lastDashTime + dashCooldown)
         {
-            isDashPressed = true;
+            IsDashPressed = true;
             lastDashTime = Time.time; // update the last dash time
         }
     }
@@ -86,6 +128,6 @@ public class PlayerInputs : MonoBehaviour
     // this is called after the dashDuration ends so that you can't stay dashing
     public void ResetDash()
     {
-        isDashPressed = false;
+        IsDashPressed = false;
     }
 }   

@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     // input and state taken from respective scripts
     private PlayerInputs playerInput;
     private PlayerState playerState;
+    private WeaponManager weaponManager;
 
     private Vector3 velocity;
     private float currentSpeed; // altered depending on inputs, changed in SetSpeed()
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInputs>();
         playerState = GetComponent<PlayerState>();
+        weaponManager = GetComponent<WeaponManager>();
         currentSpeed = moveSpeed;
     }
 
@@ -58,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        if (playerState.isDashing)
+        if (playerState.IsDashing)
         {
             // sets dashing and reduces timer, can't use other movement buttons whilst dashing
             characterController.Move(dashDirection * dashSpeed * Time.deltaTime);
@@ -72,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (playerState.isOnLadder)
+            if (playerState.IsOnLadder)
             {
                 HandleLadderMovement();
             }
@@ -87,10 +89,10 @@ public class PlayerMovement : MonoBehaviour
     private void HandleJump()
     {
         // can only jump if pressing the jump button and is either grounded or on a ladder
-        if (playerInput.isJumpPressed && (playerState.isGrounded || playerState.isOnLadder))
+        if (playerInput.IsJumpPressed && (playerState.IsGrounded || playerState.IsOnLadder))
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            if (playerState.isOnLadder)
+            if (playerState.IsOnLadder)
             {
                 // jump off ladder
                 playerState.SetOnLadder(false);
@@ -111,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
         // moveDirection is passed into MoveGround and MoveAir to have the direction the user needs to accelerate to
 
         // velocity is the previous vector3 showing what velocity was last update
-        if (playerState.isGrounded)
+        if (playerState.IsGrounded)
         {
             // ground movement
             velocity = MoveGround(moveDirection, velocity);
@@ -198,7 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleDash()
     {
-        if (playerInput.isDashPressed && !playerState.isDashing)
+        if (playerInput.IsDashPressed && !playerState.IsDashing)
         {
             StartDash();
         }
@@ -237,22 +239,25 @@ public class PlayerMovement : MonoBehaviour
         // if crouch walking: set the speed to crouchSpeed
         // if shift/slow walking: set the speed to walkSpeed
         // if crouched and slow walking: speed is set to the slower speed (crouchSpeed)
-        if (playerInput.isCrouchPressed)
+        if (playerInput.IsCrouchPressed)
         {
             currentSpeed = crouchSpeed;
         }
         else
         {
-            currentSpeed = playerInput.isWalkPressed ? walkSpeed : moveSpeed;
+            currentSpeed = playerInput.IsWalkPressed ? walkSpeed : moveSpeed;
         }
+        // apply weapon's movement speed multiplier
+        currentSpeed = currentSpeed * weaponManager.MovementSpeedMultiplier;
     }
 
-    private void LogSpeed()
+    public float LogSpeed()
     {
         // calc horizontal speed
         Vector3 horizontalVelocity = new Vector3(velocity.x, 0, velocity.z);
         float speed = horizontalVelocity.magnitude;
 
-        Debug.Log($"Player Speed: {speed:F2} m/s");
+        return speed;
+        //Debug.Log($"Player Speed: {speed:F2} m/s");
     }
 }

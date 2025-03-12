@@ -4,10 +4,10 @@ public class PlayerState : MonoBehaviour
 {
     // script contains states for the user, may expand to hold more states later.
 
-    public bool isGrounded { get; private set; }
-    public bool isCrouching { get; private set; }
-    public bool isDashing { get; private set; }
-    public bool isOnLadder { get; private set; }
+    public bool IsGrounded { get; private set; }
+    public bool IsCrouching { get; private set; }
+    public bool IsDashing { get; private set; }
+    public bool IsOnLadder { get; private set; }
 
     private CharacterController characterController;
 
@@ -18,21 +18,21 @@ public class PlayerState : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = characterController.isGrounded;
+        IsGrounded = characterController.isGrounded;
     }
 
     public void SetCrouching(bool crouching)
     {
-        isCrouching = crouching;
+        IsCrouching = crouching;
     }
 
     public void SetDashing(bool dashing)
     {
-        isDashing = dashing;
+        IsDashing = dashing;
     }
 
     public void SetOnLadder(bool onLadder)
     {
-        isOnLadder = onLadder;
+        IsOnLadder = onLadder;
     }
 }

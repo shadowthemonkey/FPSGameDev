@@ -29,7 +29,7 @@ public class PlayerCrouch : MonoBehaviour
 
     private void HandleCrouch()
     {
-        if (playerInput.isCrouchPressed)
+        if (playerInput.IsCrouchPressed)
         {
             playerState.SetCrouching(true);
             targetHeight = crouchHeight;
