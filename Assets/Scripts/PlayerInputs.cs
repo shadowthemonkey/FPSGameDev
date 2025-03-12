@@ -1,7 +1,5 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Playables;
 
 public class PlayerInputs : MonoBehaviour
 {
@@ -20,13 +18,14 @@ public class PlayerInputs : MonoBehaviour
     private float dashCooldown = 5f; // cooldown duration in seconds
     private float lastDashTime = -Mathf.Infinity; // time when the last dash occurred, -infinity by default as there's no previous dash
 
-    private bool canJump = true; // track if the player can jump (must release jump button first)
+    private bool canJump; // track if the player can jump (must release jump button first)
 
     private PlayerState playerState;
 
     private void Awake()
     {
         playerState = GetComponent<PlayerState>();
+        canJump = true; // can jump initially set to true
     }
 
     public void OnMove(InputAction.CallbackContext context)
