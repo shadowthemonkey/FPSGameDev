@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Weapon;
 
 public class PlayerInputs : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class PlayerInputs : MonoBehaviour
     // states used, one for player, one for weapons
     private PlayerState playerState;
     private WeaponManager weaponManager;
+
+    private bool isShooting = false;
+    private float nextFireTime = 0f;
 
     private void Awake()
     {
@@ -74,9 +78,35 @@ public class PlayerInputs : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.SemiAuto)
         {
-            weaponManager?.Shoot();
+            if (context.performed)
+            {
+                weaponManager?.Shoot();
+            }
+        }
+        else if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto)
+        {
+            if (context.performed)
+            {
+                isShooting = true;
+            }
+            else if (context.canceled)
+            {
+                isShooting = false;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto && isShooting)
+        {
+            if (Time.time >= nextFireTime)
+            {
+                weaponManager?.Shoot();
+                nextFireTime = Time.time + 1f / weaponManager.GetCurrentWeapon().fireRate;
+            }
         }
     }
 

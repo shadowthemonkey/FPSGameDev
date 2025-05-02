@@ -1,4 +1,4 @@
-using UnityEngine;
+    using UnityEngine;
 
 public class RifleAK : Weapon
 {
@@ -9,9 +9,10 @@ public class RifleAK : Weapon
     {
         weaponName = "AK-47";
         maxAmmo = 30;
-        fireRate = 10f;
+        fireMode = FireMode.FullAuto;
+        fireRate = 10f; // per second, so this matches the 600rpm of the ak in cs2
         reloadTime = 2.5f;
-        damage = 35;
+        damage = 36 ;
     }
 
     public override void Shoot()

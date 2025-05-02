@@ -9,9 +9,10 @@ public class PistolUSP : Weapon
     {
         weaponName = "USP-S";
         maxAmmo = 12;
-        fireRate = 3f;
+        fireMode = FireMode.SemiAuto;
+        fireRate = 6f; // per second, close to the 535 rpm the usp has in cs2
         reloadTime = 1.5f;
-        damage = 20;
+        damage = 35;
     }
 
     public override void Shoot()

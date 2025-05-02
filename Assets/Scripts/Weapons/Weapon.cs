@@ -4,6 +4,8 @@ public abstract class Weapon : MonoBehaviour
 {
     public string weaponName;
     public int maxAmmo;
+    public enum FireMode { SemiAuto, FullAuto}
+    public FireMode fireMode;
     public float fireRate;
     public float reloadTime;
     public int damage;
