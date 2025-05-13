@@ -2,9 +2,7 @@ using UnityEngine;
 
 public class Knife : Weapon
 {
-    public Transform firePoint; // currently uses the camera as the origin for raycast rays
     public float attackRate;
-    private float lastAttackTime;
 
     protected override void InitializeWeaponStats()
     {
@@ -18,9 +16,9 @@ public class Knife : Weapon
 
     public override void Shoot()
     {
-        if (Time.time >= lastAttackTime + (1f / fireRate))
+        if (Time.time >= lastShotTime + (1f / fireRate))
         {
-            lastAttackTime = Time.time;
+            lastShotTime = Time.time;
             RaycastHit hit;
             //range of 5, since melee
             if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 5f))
