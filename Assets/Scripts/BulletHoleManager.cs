@@ -5,7 +5,6 @@ public class BulletHoleManager : MonoBehaviour
     public static BulletHoleManager Instance;
 
     [SerializeField] private GameObject bulletHolePrefab;
-    [SerializeField] private float bulletTimer = 20f;
 
     private void Awake()
     {
@@ -24,6 +23,8 @@ public class BulletHoleManager : MonoBehaviour
         GameObject hole = Instantiate(bulletHolePrefab, holePosition, holeRotation);
         hole.transform.SetParent(hit.collider.transform); // makes the hole a container of whatever it hit
         hole.transform.Rotate(Vector3.forward, Random.Range(0f, 360f)); // random rotation to make the decal look different instead of it being an obviously repeated texture
-        Destroy(hole, bulletTimer); // it goes after that many seconds
+
+        //Destroy(hole, bulletTimer); // it goes after that many seconds
+        //destroy logic moved to BulletFade.cs 
     }
 }
