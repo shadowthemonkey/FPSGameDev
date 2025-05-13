@@ -10,8 +10,8 @@ public class PistolUSP : Weapon
         fireRate = 6f; // per second, close to the 535 rpm the usp has in cs2
         reloadTime = 1.5f;
         damage = 35;
-        penetrationPower = 3;
-        penetrationRate = 0.8f;
+        penetrationPower = 2;
+        penetrationRate = 0.75f;
     }
 
     public override void Shoot()
