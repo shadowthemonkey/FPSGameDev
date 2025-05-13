@@ -69,7 +69,7 @@ public abstract class Weapon : MonoBehaviour
                 AIBot bot = hit.collider.GetComponent<AIBot>();
                 if (bot != null)
                 {
-                    print("Bot takes " + currentDamage);
+                    print($"Bot takes {Mathf.RoundToInt(currentDamage)} damage");
                     bot.TakeDamage(Mathf.RoundToInt(currentDamage));
                     penetrations++;
                 }
