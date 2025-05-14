@@ -101,6 +101,15 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa1e421d-c1ab-4023-a2d2-d6b082abd6b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""move"",
                     ""type"": ""Value"",
                     ""id"": ""688f1a89-96f5-47f4-9641-dcd7d375bc5b"",
@@ -137,15 +146,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""dropW"",
-                    ""type"": ""Button"",
-                    ""id"": ""1f48702b-085e-4d09-af0c-c9bc1d622654"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""use"",
                     ""type"": ""Button"",
                     ""id"": ""50fedd81-036f-4c57-a2bf-a73a0757afc2"",
@@ -155,18 +155,27 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""shoot"",
+                    ""name"": ""reload"",
                     ""type"": ""Button"",
-                    ""id"": ""aa1e421d-c1ab-4023-a2d2-d6b082abd6b3"",
+                    ""id"": ""e84cf773-5ca5-42cb-ac98-5e566d7eaa4e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""reload"",
+                    ""name"": ""Buy"",
                     ""type"": ""Button"",
-                    ""id"": ""e84cf773-5ca5-42cb-ac98-5e566d7eaa4e"",
+                    ""id"": ""f3074934-2b04-48bb-89c6-070bceff7a67"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dropW"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f48702b-085e-4d09-af0c-c9bc1d622654"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -356,17 +365,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""500bd369-7ade-483c-88da-cdbd40f1dfb0"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""use"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6f9cd4b1-b827-4388-a687-dbe8ae127ed9"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
@@ -444,17 +442,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9eb651cd-5300-4d3f-90c9-82f0321dfa24"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""reload"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""1b40db9c-bdbf-4461-a941-ab4ea174a165"",
                     ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
@@ -499,12 +486,45 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""f11ed6af-dd9b-44dd-bb3e-160f769b3dab"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Buy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""0502004d-6e0d-4582-a5e3-2d765d5c2713"",
                     ""path"": ""*/{PrimaryAction}"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""500bd369-7ade-483c-88da-cdbd40f1dfb0"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9eb651cd-5300-4d3f-90c9-82f0321dfa24"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -561,14 +581,15 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         // gameplay
         m_gameplay = asset.FindActionMap("gameplay", throwIfNotFound: true);
         m_gameplay_look = m_gameplay.FindAction("look", throwIfNotFound: true);
+        m_gameplay_shoot = m_gameplay.FindAction("shoot", throwIfNotFound: true);
         m_gameplay_move = m_gameplay.FindAction("move", throwIfNotFound: true);
         m_gameplay_jump = m_gameplay.FindAction("jump", throwIfNotFound: true);
         m_gameplay_walk = m_gameplay.FindAction("walk", throwIfNotFound: true);
         m_gameplay_crouch = m_gameplay.FindAction("crouch", throwIfNotFound: true);
-        m_gameplay_dropW = m_gameplay.FindAction("dropW", throwIfNotFound: true);
         m_gameplay_use = m_gameplay.FindAction("use", throwIfNotFound: true);
-        m_gameplay_shoot = m_gameplay.FindAction("shoot", throwIfNotFound: true);
         m_gameplay_reload = m_gameplay.FindAction("reload", throwIfNotFound: true);
+        m_gameplay_Buy = m_gameplay.FindAction("Buy", throwIfNotFound: true);
+        m_gameplay_dropW = m_gameplay.FindAction("dropW", throwIfNotFound: true);
         m_gameplay_primary = m_gameplay.FindAction("primary", throwIfNotFound: true);
         m_gameplay_secondary = m_gameplay.FindAction("secondary", throwIfNotFound: true);
         m_gameplay_melee = m_gameplay.FindAction("melee", throwIfNotFound: true);
@@ -663,14 +684,15 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_gameplay_look;
+    private readonly InputAction m_gameplay_shoot;
     private readonly InputAction m_gameplay_move;
     private readonly InputAction m_gameplay_jump;
     private readonly InputAction m_gameplay_walk;
     private readonly InputAction m_gameplay_crouch;
-    private readonly InputAction m_gameplay_dropW;
     private readonly InputAction m_gameplay_use;
-    private readonly InputAction m_gameplay_shoot;
     private readonly InputAction m_gameplay_reload;
+    private readonly InputAction m_gameplay_Buy;
+    private readonly InputAction m_gameplay_dropW;
     private readonly InputAction m_gameplay_primary;
     private readonly InputAction m_gameplay_secondary;
     private readonly InputAction m_gameplay_melee;
@@ -696,6 +718,10 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @look => m_Wrapper.m_gameplay_look;
         /// <summary>
+        /// Provides access to the underlying input action "gameplay/shoot".
+        /// </summary>
+        public InputAction @shoot => m_Wrapper.m_gameplay_shoot;
+        /// <summary>
         /// Provides access to the underlying input action "gameplay/move".
         /// </summary>
         public InputAction @move => m_Wrapper.m_gameplay_move;
@@ -712,21 +738,21 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @crouch => m_Wrapper.m_gameplay_crouch;
         /// <summary>
-        /// Provides access to the underlying input action "gameplay/dropW".
-        /// </summary>
-        public InputAction @dropW => m_Wrapper.m_gameplay_dropW;
-        /// <summary>
         /// Provides access to the underlying input action "gameplay/use".
         /// </summary>
         public InputAction @use => m_Wrapper.m_gameplay_use;
         /// <summary>
-        /// Provides access to the underlying input action "gameplay/shoot".
-        /// </summary>
-        public InputAction @shoot => m_Wrapper.m_gameplay_shoot;
-        /// <summary>
         /// Provides access to the underlying input action "gameplay/reload".
         /// </summary>
         public InputAction @reload => m_Wrapper.m_gameplay_reload;
+        /// <summary>
+        /// Provides access to the underlying input action "gameplay/Buy".
+        /// </summary>
+        public InputAction @Buy => m_Wrapper.m_gameplay_Buy;
+        /// <summary>
+        /// Provides access to the underlying input action "gameplay/dropW".
+        /// </summary>
+        public InputAction @dropW => m_Wrapper.m_gameplay_dropW;
         /// <summary>
         /// Provides access to the underlying input action "gameplay/primary".
         /// </summary>
@@ -792,6 +818,9 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @look.started += instance.OnLook;
             @look.performed += instance.OnLook;
             @look.canceled += instance.OnLook;
+            @shoot.started += instance.OnShoot;
+            @shoot.performed += instance.OnShoot;
+            @shoot.canceled += instance.OnShoot;
             @move.started += instance.OnMove;
             @move.performed += instance.OnMove;
             @move.canceled += instance.OnMove;
@@ -804,18 +833,18 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @crouch.started += instance.OnCrouch;
             @crouch.performed += instance.OnCrouch;
             @crouch.canceled += instance.OnCrouch;
-            @dropW.started += instance.OnDropW;
-            @dropW.performed += instance.OnDropW;
-            @dropW.canceled += instance.OnDropW;
             @use.started += instance.OnUse;
             @use.performed += instance.OnUse;
             @use.canceled += instance.OnUse;
-            @shoot.started += instance.OnShoot;
-            @shoot.performed += instance.OnShoot;
-            @shoot.canceled += instance.OnShoot;
             @reload.started += instance.OnReload;
             @reload.performed += instance.OnReload;
             @reload.canceled += instance.OnReload;
+            @Buy.started += instance.OnBuy;
+            @Buy.performed += instance.OnBuy;
+            @Buy.canceled += instance.OnBuy;
+            @dropW.started += instance.OnDropW;
+            @dropW.performed += instance.OnDropW;
+            @dropW.canceled += instance.OnDropW;
             @primary.started += instance.OnPrimary;
             @primary.performed += instance.OnPrimary;
             @primary.canceled += instance.OnPrimary;
@@ -857,6 +886,9 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @look.started -= instance.OnLook;
             @look.performed -= instance.OnLook;
             @look.canceled -= instance.OnLook;
+            @shoot.started -= instance.OnShoot;
+            @shoot.performed -= instance.OnShoot;
+            @shoot.canceled -= instance.OnShoot;
             @move.started -= instance.OnMove;
             @move.performed -= instance.OnMove;
             @move.canceled -= instance.OnMove;
@@ -869,18 +901,18 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @crouch.started -= instance.OnCrouch;
             @crouch.performed -= instance.OnCrouch;
             @crouch.canceled -= instance.OnCrouch;
-            @dropW.started -= instance.OnDropW;
-            @dropW.performed -= instance.OnDropW;
-            @dropW.canceled -= instance.OnDropW;
             @use.started -= instance.OnUse;
             @use.performed -= instance.OnUse;
             @use.canceled -= instance.OnUse;
-            @shoot.started -= instance.OnShoot;
-            @shoot.performed -= instance.OnShoot;
-            @shoot.canceled -= instance.OnShoot;
             @reload.started -= instance.OnReload;
             @reload.performed -= instance.OnReload;
             @reload.canceled -= instance.OnReload;
+            @Buy.started -= instance.OnBuy;
+            @Buy.performed -= instance.OnBuy;
+            @Buy.canceled -= instance.OnBuy;
+            @dropW.started -= instance.OnDropW;
+            @dropW.performed -= instance.OnDropW;
+            @dropW.canceled -= instance.OnDropW;
             @primary.started -= instance.OnPrimary;
             @primary.performed -= instance.OnPrimary;
             @primary.canceled -= instance.OnPrimary;
@@ -1065,6 +1097,13 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLook(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "shoot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnShoot(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -1093,13 +1132,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCrouch(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "dropW" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDropW(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "use" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -1107,19 +1139,26 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnUse(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "shoot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnShoot(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "reload" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnReload(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Buy" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBuy(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "dropW" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDropW(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "primary" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

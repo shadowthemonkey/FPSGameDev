@@ -35,14 +35,48 @@ public class PlayerInputs : MonoBehaviour
         canJump = true; // can jump initially set to true
     }
 
-    public void OnMove(InputAction.CallbackContext context)
+    private void Update()
     {
-        moveInput = context.ReadValue<Vector2>();
+        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto && isShooting)
+        {
+            if (Time.time >= nextFireTime)
+            {
+                weaponManager?.Shoot();
+                nextFireTime = Time.time + 1f / weaponManager.GetCurrentWeapon().fireRate;
+            }
+        }
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
         lookInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.SemiAuto)
+        {
+            if (context.performed)
+            {
+                weaponManager?.Shoot();
+            }
+        }
+        else if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto)
+        {
+            if (context.performed)
+            {
+                isShooting = true;
+            }
+            else if (context.canceled)
+            {
+                isShooting = false;
+            }
+        }
     }
 
     // jump methods, the triple && if statement is to prevent holding jump, as context.started just didn't work for what I needed
@@ -76,45 +110,19 @@ public class PlayerInputs : MonoBehaviour
         IsCrouchPressed = context.performed;
     }
 
-    public void OnShoot(InputAction.CallbackContext context)
-    {
-        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.SemiAuto)
-        {
-            if (context.performed)
-            {
-                weaponManager?.Shoot();
-            }
-        }
-        else if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto)
-        {
-            if (context.performed)
-            {
-                isShooting = true;
-            }
-            else if (context.canceled)
-            {
-                isShooting = false;
-            }
-        }
-    }
-
-    private void Update()
-    {
-        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto && isShooting)
-        {
-            if (Time.time >= nextFireTime)
-            {
-                weaponManager?.Shoot();
-                nextFireTime = Time.time + 1f / weaponManager.GetCurrentWeapon().fireRate;
-            }
-        }
-    }
-
     public void OnReload(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             weaponManager?.Reload();
+        }
+    }
+
+    public void OnBuy(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            print("buy menu");
         }
     }
 
