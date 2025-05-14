@@ -25,23 +25,47 @@ public class RifleAK : Weapon
         base.Shoot();
     }
 
-    // spray pattern test for now
+    // spray pattern similar to the cs2 AK-47
     private Vector2[] akSprayPattern = new Vector2[]
     {
         new Vector2(0, 0),
-        new Vector2(0, 1),
-        new Vector2(0, 2),
-        new Vector2(0, 3),
-        new Vector2(0, 4),
-        new Vector2(0, 5),
-        new Vector2(0, 6),
-
+        new Vector2(-0.3f, 0.2f),
+        new Vector2(-0.2f, 2f),
+        new Vector2(0, 4f),
+        new Vector2(-0.1f, 6f),
+        new Vector2(0.4f, 8f),
+        new Vector2(0.7f, 9f),
+        new Vector2(1f, 10f),
+        new Vector2(0.6f, 12f),
+        new Vector2(-0.7f, 11.5f),
+        new Vector2(-0.8f, 11.7f),
+        new Vector2(-1.3f, 12.2f),
+        new Vector2(-1.7f, 12.1f),
+        new Vector2(-1.9f, 12.3f),
+        new Vector2(-1.7f, 12.4f),
+        new Vector2(-1.5f, 12.6f),
+        new Vector2(-1f, 12.8f),
+        new Vector2(0f, 13.1f),
+        new Vector2(0.5f, 13.2f),
+        new Vector2(0.8f, 13.4f),
+        new Vector2(1f, 13.1f),
+        new Vector2(1.5f, 13.2f),
+        new Vector2(1.9f, 13f),
+        new Vector2(1.4f, 12.9f),
+        new Vector2(0.6f, 13.1f),
+        new Vector2(-0.1f, 13.1f),
+        new Vector2(-0.5f, 13.2f),
+        new Vector2(-1f, 13.1f),
+        new Vector2(-1.5f, 13.2f),
+        new Vector2(-1.8f, 13.3f),
     };
 
-    protected override Vector3 GetSprayDirection()
+    protected override Vector3 GetSprayPatternOffset()
     {
+        /*
         if (shotCount >= akSprayPattern.Length)
-            return new Vector3(0, 1.5f, 0); // fallback for long spray
+            return new Vector3(0, 1.5f, 0); // fallback for long spray, 30 bullets are already calculated
+        */
 
         Vector2 pattern = akSprayPattern[shotCount];
         return new Vector3(-pattern.x, pattern.y, 0); // flip X for recoil direction

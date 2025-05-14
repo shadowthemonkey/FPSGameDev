@@ -2608,6 +2608,8 @@ MonoBehaviour:
   playerCamera: {fileID: 963194228}
   lookSensitivity: 0.5
   lookXLimit: 90
+  recoilSmoothTime: 0.05
+  recoilReturnSpeed: 5
 --- !u!114 &1055692050
 MonoBehaviour:
   m_ObjectHideFlags: 0

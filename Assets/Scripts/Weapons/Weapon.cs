@@ -12,17 +12,22 @@ public abstract class Weapon : MonoBehaviour
     public int damage;
     public int penetrationPower; // number of layers
     public float penetrationRate; //damage reduction per layer
+    protected int currentAmmo;
+    protected bool isReloading = false;
 
     // variables for recoil and spray control
     protected int shotCount = 0;
     protected float recoilResetTime = 0.3f; // time after which spray resets
     protected float lastRecoilTime = 0f;
-
-    protected int currentAmmo;
-    protected bool isReloading = false;
-
     protected float lastShotTime;
+
+    protected float horizontalSprayScale = 0.02f;
+    protected float verticalSprayScale = 0.02f;
+
+    private Vector2 totalRecoil = Vector2.zero;
+    
     public Transform firePoint; // currently uses the camera as the origin for raycast rays
+    protected PlayerLook playerLook;
 
     // getter methods to access ammo count and weapon name for GUI
     public string GetWeaponName() => weaponName;
@@ -33,12 +38,15 @@ public abstract class Weapon : MonoBehaviour
     {
         InitializeWeaponStats();
         currentAmmo = maxAmmo;
+        playerLook = FindObjectOfType<PlayerLook>();
     }
 
     protected virtual void Update()
     {
+        // spray end
         if (Time.time - lastRecoilTime > recoilResetTime)
             shotCount = 0;
+            totalRecoil = Vector2.zero;
     }
 
     // each weapon will define its own stats inside this method
@@ -54,13 +62,12 @@ public abstract class Weapon : MonoBehaviour
         lastShotTime = Time.time;
 
 
-        Vector3 sprayOffset = GetSprayDirection(); //degrees
+        Vector2 sprayOffset = GetSprayPatternOffset(); // renamed for clarity
         ApplyRecoil(sprayOffset);
 
-        // build a direction offset in local space
         Vector3 direction = firePoint.forward
-            + firePoint.up * sprayOffset.y * 0.01f // vertical spray
-            + firePoint.right * sprayOffset.x * 0.01f; // horizontal spray
+        + firePoint.up * sprayOffset.y * verticalSprayScale
+        + firePoint.right * sprayOffset.x * horizontalSprayScale;
         direction.Normalize();
         FireRaycast(damage, direction);
 
@@ -166,14 +173,17 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    protected virtual Vector3 GetSprayDirection()
+    protected virtual Vector3 GetSprayPatternOffset()
     {
         return Vector3.zero; // default: no spray, example weapons like non-automatic weapons would not have sprays
     }
 
-    protected virtual void ApplyRecoil(Vector3 sprayOffset)
+    protected virtual void ApplyRecoil(Vector2 sprayOffset)
     {
-        // optional: Add view punch or visual recoil here, I will leave blank for now
+        if (playerLook != null)
+        {
+            playerLook.ApplyRecoil(new Vector2(sprayOffset.x / 2, sprayOffset.y / 2));
+        }
     }
 
     public virtual void Reload()
