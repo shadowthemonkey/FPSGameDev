@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public abstract class Weapon : MonoBehaviour
 {
@@ -13,6 +12,11 @@ public abstract class Weapon : MonoBehaviour
     public int damage;
     public int penetrationPower; // number of layers
     public float penetrationRate; //damage reduction per layer
+
+    // variables for recoil and spray control
+    protected int shotCount = 0;
+    protected float recoilResetTime = 0.3f; // time after which spray resets
+    protected float lastRecoilTime = 0f;
 
     protected int currentAmmo;
     protected bool isReloading = false;
@@ -31,6 +35,12 @@ public abstract class Weapon : MonoBehaviour
         currentAmmo = maxAmmo;
     }
 
+    protected virtual void Update()
+    {
+        if (Time.time - lastRecoilTime > recoilResetTime)
+            shotCount = 0;
+    }
+
     // each weapon will define its own stats inside this method
     protected abstract void InitializeWeaponStats();
 
@@ -43,16 +53,36 @@ public abstract class Weapon : MonoBehaviour
         currentAmmo--;
         lastShotTime = Time.time;
 
-        FireRaycast(damage);
+
+        Vector3 sprayOffset = GetSprayDirection(); //degrees
+        ApplyRecoil(sprayOffset);
+
+        // build a direction offset in local space
+        Vector3 direction = firePoint.forward
+            + firePoint.up * sprayOffset.y * 0.01f // vertical spray
+            + firePoint.right * sprayOffset.x * 0.01f; // horizontal spray
+        direction.Normalize();
+        FireRaycast(damage, direction);
+
+        shotCount++;
+        lastRecoilTime = Time.time;
+
+        //FireRaycast(damage);
     }
 
+    // overloaded method
     protected virtual void FireRaycast(float startingDamage)
     {
+        FireRaycast(startingDamage, firePoint.forward); // default case
+    }
+
+    protected virtual void FireRaycast(float startingDamage, Vector3 direction)
+    {
         Vector3 origin = firePoint.position;
-        Vector3 direction = firePoint.forward;
 
         // list of all raycast hits, so we can deal with wallbangs and collaterals (hitting enemies behind walls and other enemies)
         RaycastHit[] hits = Physics.RaycastAll(origin, direction, 100f);
+        Debug.DrawRay(origin, direction * 100f, Color.red, 5.0f);
         Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance)); // sorted by distance
 
         Vector3 finalHitPoint = origin + direction * 100f;
@@ -136,7 +166,15 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
+    protected virtual Vector3 GetSprayDirection()
+    {
+        return Vector3.zero; // default: no spray, example weapons like non-automatic weapons would not have sprays
+    }
 
+    protected virtual void ApplyRecoil(Vector3 sprayOffset)
+    {
+        // optional: Add view punch or visual recoil here, I will leave blank for now
+    }
 
     public virtual void Reload()
     {
