@@ -24,6 +24,7 @@ public class PlayerInputs : MonoBehaviour
     // states used, one for player, one for weapons
     private PlayerState playerState;
     private WeaponManager weaponManager;
+    private UIManager UIManager;
 
     private bool isShooting = false;
     private float nextFireTime = 0f;
@@ -32,6 +33,14 @@ public class PlayerInputs : MonoBehaviour
     {
         playerState = GetComponent<PlayerState>();
         weaponManager = GetComponent<WeaponManager>();
+        UIManager = FindFirstObjectByType<UIManager>();
+        /*
+        GameObject uiManagerObj = GameObject.FindGameObjectWithTag("UIManager");
+        if (uiManagerObj != null)
+        {
+            UIManager = uiManagerObj.GetComponent<UIManager>();
+        }
+        */
         canJump = true; // can jump initially set to true
     }
 
@@ -49,6 +58,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        if (UIManager.IsBuyMenuOpen) return; // player can't look around whilst in menu
+
         lookInput = context.ReadValue<Vector2>();
     }
 
@@ -59,6 +70,8 @@ public class PlayerInputs : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
+        if (UIManager.IsBuyMenuOpen) return;
+
         if (weaponManager.GetCurrentWeapon().fireMode == FireMode.SemiAuto)
         {
             if (context.performed)
@@ -122,7 +135,8 @@ public class PlayerInputs : MonoBehaviour
     {
         if (context.performed)
         {
-            print("buy menu");
+            //Debug.Log(UIManager == null ? "UIManager is null" : "UIManager is set");
+            UIManager?.ToggleBuyMenu();
         }
     }
 

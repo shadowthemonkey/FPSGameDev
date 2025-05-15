@@ -486,17 +486,6 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f11ed6af-dd9b-44dd-bb3e-160f769b3dab"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Buy"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""0502004d-6e0d-4582-a5e3-2d765d5c2713"",
                     ""path"": ""*/{PrimaryAction}"",
                     ""interactions"": """",
@@ -525,6 +514,17 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f11ed6af-dd9b-44dd-bb3e-160f769b3dab"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Buy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }

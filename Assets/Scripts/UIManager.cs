@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -9,7 +10,45 @@ public class UIManager : MonoBehaviour
     [Header("UI Elements")]
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI weaponInfoText;
-    // currently just using GUI to show the speed of the player, and the weapon info
+
+    public GameObject buyMenuPanel;
+    public static bool IsBuyMenuOpen { get; private set; }
+
+    public Button uspButton;
+    public Button deagleButton;
+
+    public Button akButton;
+    public Button m4Button;
+    public Button awpButton;
+
+    private void Start()
+    {
+        buyMenuPanel.SetActive(false); // hide on start
+
+        uspButton.onClick.AddListener(() => Purchase("USP"));
+        deagleButton.onClick.AddListener(() => Purchase("Deagle"));
+
+        akButton.onClick.AddListener(() => Purchase("AK"));
+        m4Button.onClick.AddListener(() => Purchase("M4"));
+        awpButton.onClick.AddListener(() => Purchase("AWP"));
+    }
+
+    public void ToggleBuyMenu()
+    {
+        // active --> inactive --> active
+        bool isMenuOpen = !buyMenuPanel.activeSelf;
+        buyMenuPanel.SetActive(isMenuOpen);
+        IsBuyMenuOpen = isMenuOpen; // accessed in playerinputs
+        // cursor no longer locked to centre if buy menu opened, also visible
+        Cursor.lockState = buyMenuPanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = buyMenuPanel.activeSelf; // uf buy menu is up, then cursor visible
+    }
+
+    private void Purchase(string weaponName)
+    {
+        bool success = weaponManager.BuyWeapon(weaponName);
+        // kinda useless class for now, just considering if any other logic needs to happen here
+    }
 
     private void Update()
     {

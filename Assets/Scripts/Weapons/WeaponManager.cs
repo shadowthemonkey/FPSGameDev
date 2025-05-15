@@ -11,15 +11,13 @@ public class WeaponManager : MonoBehaviour
     public GameObject awpPrefab;
     public GameObject shotgunPrefab;
 
-    [Header("Runtime Weapons")]
-    public Weapon primaryWeapon;
-    public Weapon secondaryWeapon;
-    public Weapon meleeWeapon;
+    private Weapon primaryWeapon;
+    private Weapon secondaryWeapon;
+    private Weapon meleeWeapon;
 
     public Transform weaponHolder;
 
     private Weapon currentWeapon;
-
     [SerializeField] private Transform firePoint;
 
     public float MovementSpeedMultiplier { get; private set; }
@@ -30,12 +28,11 @@ public class WeaponManager : MonoBehaviour
     private void Start()
     {
         // instantiate and equip default weapons
-        primaryWeapon = null; // no primary at start
+        //primary starts off as null    
         secondaryWeapon = InstantiateWeapon(uspPrefab);
         meleeWeapon = InstantiateWeapon(knifePrefab);
 
-        EquipWeapon(secondaryWeapon); // start with USP
-        MovementSpeedMultiplier = 0.9f;
+        SetSecondary(); // start with pistol, since you don't have primary
     }
 
     private Weapon InstantiateWeapon(GameObject prefab)
@@ -93,12 +90,71 @@ public class WeaponManager : MonoBehaviour
     {
         if (currentWeapon != null)
         {
+            currentWeapon.CancelReload(); // just in case of the user reloading then switching weapons before completion
             currentWeapon.gameObject.SetActive(false); // hide previous weapon
         }
 
         currentWeapon = newWeapon;
         currentWeapon.gameObject.SetActive(true); // show new weapon
         //Debug.Log("Switched to: " + currentWeapon.weaponName);
+    }
+
+    public bool BuyWeapon(string weaponName)
+    {
+        GameObject prefab = null;
+        //boolean for now, might have to switch to a better system if other weapon types are added
+        bool isPrimary = false;
+
+        // cases reference in UIManager
+        switch (weaponName)
+        {
+            case "USP":
+                prefab = uspPrefab;
+                isPrimary = false;
+                break;
+            case "Deagle":
+                prefab = deaglePrefab;
+                isPrimary = false;
+                break;
+            case "AK":
+                prefab = akPrefab;
+                isPrimary = true;
+                break;
+            case "M4":
+                prefab = m4Prefab;
+                isPrimary = true;
+                break;
+            case "AWP":
+                prefab = awpPrefab;
+                isPrimary = true;
+                break;
+        }
+
+        if (prefab == null) return false;
+
+        // instantiate
+        Weapon newWeapon = InstantiateWeapon(prefab);
+
+        if (isPrimary)
+        {
+            if (primaryWeapon != null)
+                Destroy(primaryWeapon.gameObject);
+
+            primaryWeapon = newWeapon;
+            EquipWeapon(primaryWeapon);
+            MovementSpeedMultiplier = 0.8f;
+        }
+        else
+        {
+            if (secondaryWeapon != null)
+                Destroy(secondaryWeapon.gameObject);
+
+            secondaryWeapon = newWeapon;
+            EquipWeapon(secondaryWeapon);
+            MovementSpeedMultiplier = 0.9f;
+        }
+
+        return true;
     }
 }
 

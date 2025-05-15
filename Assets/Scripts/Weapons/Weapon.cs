@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -14,6 +15,7 @@ public abstract class Weapon : MonoBehaviour
     public float penetrationRate; //damage reduction per layer
     protected int currentAmmo;
     protected bool isReloading = false;
+    private Coroutine reloadCoroutine;
 
     // variables for recoil and spray control
     protected int shotCount = 0;
@@ -38,7 +40,7 @@ public abstract class Weapon : MonoBehaviour
     {
         InitializeWeaponStats();
         currentAmmo = maxAmmo;
-        playerLook = FindObjectOfType<PlayerLook>();
+        playerLook = FindFirstObjectByType<PlayerLook>();
     }
 
     protected virtual void Update()
@@ -192,11 +194,11 @@ public abstract class Weapon : MonoBehaviour
         if (!isReloading && currentAmmo < maxAmmo)
         {
             // coroutine because of the wait
-            StartCoroutine(ReloadCoroutine());
+            reloadCoroutine = StartCoroutine(ReloadCoroutine());
         }
     }
 
-    private System.Collections.IEnumerator ReloadCoroutine()
+    private IEnumerator ReloadCoroutine()
     {
         isReloading = true;
         Debug.Log($"{weaponName} reloading...");
@@ -206,5 +208,16 @@ public abstract class Weapon : MonoBehaviour
         currentAmmo = maxAmmo;
         isReloading = false;
         Debug.Log($"{weaponName} reloaded.");
+    }
+
+    // call cancel when switching weapons
+    public void CancelReload()
+    {
+        if (reloadCoroutine != null)
+        {
+            StopCoroutine(reloadCoroutine);
+            reloadCoroutine = null;
+        }
+        isReloading = false;
     }
 }
