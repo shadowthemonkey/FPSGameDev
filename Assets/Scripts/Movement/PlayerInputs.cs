@@ -79,8 +79,9 @@ public class PlayerInputs : MonoBehaviour
                 weaponManager?.Shoot();
             }
         }
-        else if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto)
+        else if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto || weaponManager.GetCurrentWeapon().fireMode == FireMode.Sniper)
         {
+            // logic for semi auto and sniper are basically the same
             if (context.performed)
             {
                 isShooting = true;
@@ -88,6 +89,19 @@ public class PlayerInputs : MonoBehaviour
             else if (context.canceled)
             {
                 isShooting = false;
+            }
+        }
+    }
+
+    public void OnZoom(InputAction.CallbackContext context)
+    {
+        if (UIManager.IsBuyMenuOpen) return;
+
+        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.Sniper)
+        {
+            if (context.performed)
+            {
+                weaponManager?.Shoot();
             }
         }
     }

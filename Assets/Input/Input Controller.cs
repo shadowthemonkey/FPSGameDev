@@ -110,6 +110,15 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ed0f468-8e76-49bf-ac43-ac3fe330b856"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""move"",
                     ""type"": ""Value"",
                     ""id"": ""688f1a89-96f5-47f4-9641-dcd7d375bc5b"",
@@ -527,6 +536,17 @@ public partial class @InputController: IInputActionCollection2, IDisposable
                     ""action"": ""Buy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e43d0f04-fb7e-4d56-b73b-5eccb27085e2"",
+                    ""path"": ""*/{SecondaryAction}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -582,6 +602,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         m_gameplay = asset.FindActionMap("gameplay", throwIfNotFound: true);
         m_gameplay_look = m_gameplay.FindAction("look", throwIfNotFound: true);
         m_gameplay_shoot = m_gameplay.FindAction("shoot", throwIfNotFound: true);
+        m_gameplay_Zoom = m_gameplay.FindAction("Zoom", throwIfNotFound: true);
         m_gameplay_move = m_gameplay.FindAction("move", throwIfNotFound: true);
         m_gameplay_jump = m_gameplay.FindAction("jump", throwIfNotFound: true);
         m_gameplay_walk = m_gameplay.FindAction("walk", throwIfNotFound: true);
@@ -685,6 +706,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_gameplay_look;
     private readonly InputAction m_gameplay_shoot;
+    private readonly InputAction m_gameplay_Zoom;
     private readonly InputAction m_gameplay_move;
     private readonly InputAction m_gameplay_jump;
     private readonly InputAction m_gameplay_walk;
@@ -721,6 +743,10 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "gameplay/shoot".
         /// </summary>
         public InputAction @shoot => m_Wrapper.m_gameplay_shoot;
+        /// <summary>
+        /// Provides access to the underlying input action "gameplay/Zoom".
+        /// </summary>
+        public InputAction @Zoom => m_Wrapper.m_gameplay_Zoom;
         /// <summary>
         /// Provides access to the underlying input action "gameplay/move".
         /// </summary>
@@ -821,6 +847,9 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @shoot.started += instance.OnShoot;
             @shoot.performed += instance.OnShoot;
             @shoot.canceled += instance.OnShoot;
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
             @move.started += instance.OnMove;
             @move.performed += instance.OnMove;
             @move.canceled += instance.OnMove;
@@ -889,6 +918,9 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             @shoot.started -= instance.OnShoot;
             @shoot.performed -= instance.OnShoot;
             @shoot.canceled -= instance.OnShoot;
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
             @move.started -= instance.OnMove;
             @move.performed -= instance.OnMove;
             @move.canceled -= instance.OnMove;
@@ -1103,6 +1135,13 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnShoot(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Zoom" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnZoom(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

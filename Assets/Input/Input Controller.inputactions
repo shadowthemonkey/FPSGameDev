@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Zoom",
+                    "type": "Button",
+                    "id": "2ed0f468-8e76-49bf-ac43-ac3fe330b856",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "move",
                     "type": "Value",
                     "id": "688f1a89-96f5-47f4-9641-dcd7d375bc5b",
@@ -439,6 +448,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Buy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e43d0f04-fb7e-4d56-b73b-5eccb27085e2",
+                    "path": "*/{SecondaryAction}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
