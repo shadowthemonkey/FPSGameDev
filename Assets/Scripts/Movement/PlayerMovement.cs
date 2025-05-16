@@ -1,6 +1,9 @@
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     // this script handles the movement of the player, it contains code for normal walking on the ground
     // but also air strafing, and ladder movement
@@ -17,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float crouchSpeed = 1.75f;
     [SerializeField] private float dashSpeed = 30f;
     [SerializeField] private float dashDuration = 0.2f;
-    [SerializeField] private float ladderClimbSpeed = 3f;
 
     [SerializeField] private float groundAccelerate = 15f;
     [SerializeField] private float airAccelerate = 5f;
@@ -33,29 +35,81 @@ public class PlayerMovement : MonoBehaviour
     private PlayerState playerState;
     private WeaponManager weaponManager;
 
+    private Vector2 inputMove;
+    private bool inputJump;
+    private bool inputCrouch;
+    private bool inputWalk;
+    private bool inputDash;
+
     private Vector3 velocity;
     private float currentSpeed; // altered depending on inputs, changed in SetSpeed()
 
     private float dashEndTime; // time when the dash ends
     private Vector3 dashDirection; // direction of the dash
 
-    private void Awake()
+    public override void OnStartNetwork()
     {
+        base.OnStartNetwork();
+
         playerInput = GetComponent<PlayerInputs>();
         playerState = GetComponent<PlayerState>();
         weaponManager = GetComponent<WeaponManager>();
         currentSpeed = moveSpeed;
+
+        if (!Owner.IsLocalClient)
+        {
+            // disable input and character controller on non-owners so only owner moves this player.
+            playerInput.enabled = false;
+            enabled = false; // disable this movement script on non-owners
+        }
+
+        // only allow CharacterController if this object is initialized on the server
+        if (!IsServerInitialized)
+        {
+            characterController.enabled = false;
+        }
     }
 
     private void Update()
     {
-        SetSpeed();
-        HandleMovement();
-        HandleDash();
-        HandleJump();
+        if (!IsOwner) return;
 
-        // log player's speed for testing
-        LogSpeed();
+        inputMove = playerInput.moveInput;
+        inputJump = playerInput.IsJumpPressed;
+        inputCrouch = playerInput.IsCrouchPressed;
+        inputWalk = playerInput.IsWalkPressed;
+        inputDash = playerInput.IsDashPressed;
+
+        float yaw = playerInput.lookInput.x;
+        // collects input and send to server for processing
+        SendInputToServer(playerInput.moveInput, playerInput.IsJumpPressed, playerInput.IsDashPressed, playerInput.IsCrouchPressed, playerInput.IsWalkPressed, yaw);
+
+        // reset jump and dash inputs after sending
+        if (inputJump) playerInput.ResetJump();
+        if (inputDash) playerInput.ResetDash();
+    }
+
+    [ServerRpc]
+    private void SendInputToServer(Vector2 moveInput, bool jump, bool crouch, bool walk, bool dash, float yaw)
+    {
+        // save input to local variables on server
+        inputMove = moveInput;
+        inputJump = jump;
+        inputCrouch = crouch;
+        inputWalk = walk;
+        inputDash = dash;
+
+        //0.5 is the sens from playerlook, later on I can connect them
+        transform.Rotate(Vector3.up * yaw * 0.5f);
+
+        // run your movement logic on the server side
+        HandleMovement();
+        HandleJump();
+        HandleDash();
+        SetSpeed();
+
+        // move character controller
+        GetComponent<CharacterController>().Move(velocity * Time.deltaTime);
     }
 
     private void HandleMovement()
@@ -69,35 +123,25 @@ public class PlayerMovement : MonoBehaviour
             {
                 // dash duration is over
                 playerState.SetDashing(false);
-                playerInput.ResetDash(); // call the method to reset IsDashPressed to false
+                //playerInput.ResetDash(); // call the method to reset IsDashPressed to false
             }
         }
         else
         {
-            if (playerState.IsOnLadder)
-            {
-                HandleLadderMovement();
-            }
-            else
-            {
-                // moving whilst grounded, and moving whilst in air, this handles most movement scenarios
-                HandleGroundAndAirMovement();
-            }
+            // moving whilst grounded, and moving whilst in air, this handles most movement scenarios
+            HandleGroundAndAirMovement();
         }
     }
 
     private void HandleJump()
     {
-        // can only jump if pressing the jump button and is either grounded or on a ladder
-        if (playerInput.IsJumpPressed && (playerState.IsGrounded || playerState.IsOnLadder))
+        // can only jump if pressing the jump button and is either grounded //or on a ladder (removed ladders)
+        if (inputJump && playerState.IsGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            if (playerState.IsOnLadder)
-            {
-                // jump off ladder
-                playerState.SetOnLadder(false);
-            }
-            playerInput.ResetJump(); // call the method to reset IsJumpPressed to false
+           
+            inputJump = false;
+            //playerInput.ResetJump(); // call the method to reset IsJumpPressed to false
             // this means that the player can't hold down the button to automatically jump, they must perform the input again
         }
     }
@@ -105,11 +149,8 @@ public class PlayerMovement : MonoBehaviour
     // movement for grounded movement (walking, crouching, etc) and air movement (keeping momentum, air strafes, etc)
     private void HandleGroundAndAirMovement()
     {
-        // get movement input
-        Vector2 input = playerInput.moveInput;
-
         // calc desired movement direction
-        Vector3 moveDirection = (transform.right * input.x + transform.forward * input.y).normalized;
+        Vector3 moveDirection = (transform.right * inputMove.x + transform.forward * inputMove.y).normalized;
         // moveDirection is passed into MoveGround and MoveAir to have the direction the user needs to accelerate to
 
         // velocity is the previous vector3 showing what velocity was last update
@@ -122,18 +163,17 @@ public class PlayerMovement : MonoBehaviour
         {
             // air movement
             velocity = MoveAir(moveDirection, velocity);
-
             // apply gravity since in air
             velocity.y += gravity * Time.deltaTime;
         }
 
         // apply movement changes to the character
-        characterController.Move(velocity * Time.deltaTime);
+        //characterController.Move(velocity * Time.deltaTime);
     }
 
     // this version of movement allows the player to counterstrafe in ground
     // if you were to walk left and wanted to slow down faster, you can stop almost immediately by letting go of A, then tapping D
-    
+
     private Vector3 MoveGround(Vector3 accelDir, Vector3 prevVelocity)
     {
         // apply friction only if no input is given, this is basically deceleration
@@ -200,38 +240,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleDash()
     {
-        if (playerInput.IsDashPressed && !playerState.IsDashing)
+        if (inputDash && !playerState.IsDashing)
         {
-            StartDash();
+            playerState.SetDashing(true);
+            dashEndTime = Time.time + dashDuration;
+
+            // calculate dash direction based on movement input
+            dashDirection = transform.right * inputMove.x + transform.forward * inputMove.y;
+
+            // normalize the direction to ensure consistent dash speed
+            if (dashDirection.magnitude > 0)
+            {
+                dashDirection.Normalize();
+            }
+            else
+            {
+                // if no movement input, dash forward
+                dashDirection = transform.forward;
+            }
+
+            //Debug.Log("Dashing in direction: " + dashDirection);
         }
-    }
-
-    private void StartDash()
-    {
-        playerState.SetDashing(true);
-        dashEndTime = Time.time + dashDuration;
-
-        // calculate dash direction based on movement input
-        dashDirection = transform.right * playerInput.moveInput.x + transform.forward * playerInput.moveInput.y;
-
-        // normalize the direction to ensure consistent dash speed
-        if (dashDirection.magnitude > 0)
-        {
-            dashDirection.Normalize();
-        }
-        else
-        {
-            // if no movement input, dash forward
-            dashDirection = transform.forward;
-        }
-
-        //Debug.Log("Dashing in direction: " + dashDirection);
-    }
-
-    private void HandleLadderMovement()
-    {
-        velocity.y = playerInput.moveInput.y * ladderClimbSpeed;
-        characterController.Move(velocity * Time.deltaTime);
     }
 
     public void SetSpeed()
@@ -239,13 +268,13 @@ public class PlayerMovement : MonoBehaviour
         // if crouch walking: set the speed to crouchSpeed
         // if shift/slow walking: set the speed to walkSpeed
         // if crouched and slow walking: speed is set to the slower speed (crouchSpeed)
-        if (playerInput.IsCrouchPressed)
+        if (inputCrouch)
         {
             currentSpeed = crouchSpeed;
         }
         else
         {
-            currentSpeed = playerInput.IsWalkPressed ? walkSpeed : moveSpeed;
+            currentSpeed = inputWalk ? walkSpeed : moveSpeed;
         }
         // apply weapon's movement speed multiplier
         currentSpeed = currentSpeed * weaponManager.MovementSpeedMultiplier;

@@ -1,8 +1,9 @@
+using FishNet.Object;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Weapon;
 
-public class PlayerInputs : MonoBehaviour
+public class PlayerInputs : NetworkBehaviour
 {
     // script takes in player's input and uses functions connected using the new input system
     // all player inputs will connect to a function here
@@ -29,6 +30,10 @@ public class PlayerInputs : MonoBehaviour
     private bool isShooting = false;
     private float nextFireTime = 0f;
 
+    [Header("Camera and Audio")]
+    public GameObject playerCamera;
+    public AudioListener audioListener;
+
     private void Awake()
     {
         playerState = GetComponent<PlayerState>();
@@ -46,6 +51,7 @@ public class PlayerInputs : MonoBehaviour
 
     private void Update()
     {
+
         if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto && isShooting)
         {
             if (Time.time >= nextFireTime)
@@ -53,6 +59,20 @@ public class PlayerInputs : MonoBehaviour
                 weaponManager?.Shoot();
                 nextFireTime = Time.time + 1f / weaponManager.GetCurrentWeapon().fireRate;
             }
+        }
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        if (!IsOwner)
+        {
+            // disable camera and audio for non-local players
+            if (playerCamera != null)
+                playerCamera.SetActive(false);
+            if (audioListener != null)
+                audioListener.enabled = false;
         }
     }
 

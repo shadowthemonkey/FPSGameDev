@@ -132,6 +132,16 @@ public abstract class Weapon : MonoBehaviour
                     penetrations++;
                 }
             }
+            else if (hit.collider.CompareTag("Player")) // if hit an enemy
+            {
+                AIBot bot = hit.collider.GetComponent<AIBot>();
+                if (bot != null)
+                {
+                    print($"Player takes {Mathf.RoundToInt(currentDamage)} damage");
+                    bot.TakeDamage(Mathf.RoundToInt(currentDamage));
+                    penetrations++;
+                }
+            }
             else if (hit.collider.CompareTag("Wall")) // if hit a wall, add a penetration
             {
                 BulletHoleManager.Instance.SpawnBulletHole(hit);
