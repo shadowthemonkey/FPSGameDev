@@ -5,7 +5,11 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     public string weaponName;
-    public int maxAmmo;
+    public int magSize;
+    public int reserveAmmo;
+    protected int currentAmmo;
+    protected bool isReloading = false;
+    private Coroutine reloadCoroutine;
     public enum FireMode { SemiAuto, FullAuto, Sniper}
     public FireMode fireMode;
     public float fireRate;
@@ -13,9 +17,6 @@ public abstract class Weapon : MonoBehaviour
     public int damage;
     public int penetrationPower; // number of layers
     public float penetrationRate; //damage reduction per layer
-    protected int currentAmmo;
-    protected bool isReloading = false;
-    private Coroutine reloadCoroutine;
 
     // variables for recoil and spray control
     protected int shotCount = 0;
@@ -45,12 +46,12 @@ public abstract class Weapon : MonoBehaviour
     // getter methods to access ammo count and weapon name for GUI
     public string GetWeaponName() => weaponName;
     public int GetCurrentAmmo() => currentAmmo;
-    public int GetTotalAmmo() => maxAmmo;
+    public int GetTotalAmmo() => reserveAmmo;
 
     protected virtual void Awake()
     {
         InitializeWeaponStats();
-        currentAmmo = maxAmmo;
+        currentAmmo = magSize;
         playerLook = FindFirstObjectByType<PlayerLook>();
 
         // cache original field of view before scoped
@@ -238,10 +239,13 @@ public abstract class Weapon : MonoBehaviour
     public virtual void Reload()
     {
         // reload logic, can't reload if full
-        if (!isReloading && currentAmmo < maxAmmo)
+        if (!isReloading && currentAmmo < magSize)
         {
-            // coroutine because of the wait
-            reloadCoroutine = StartCoroutine(ReloadCoroutine());
+            if (!isReloading && reserveAmmo >= 0)
+            {
+                // coroutine because of the wait
+                reloadCoroutine = StartCoroutine(ReloadCoroutine());
+            }
         }
     }
 
@@ -252,7 +256,14 @@ public abstract class Weapon : MonoBehaviour
 
         yield return new WaitForSeconds(reloadTime);
 
-        currentAmmo = maxAmmo;
+        int neededAmmo = magSize - currentAmmo;
+        // pick the smallest, if reserve ammo is smaller than needed ammo, that means the player doesn't have enough to get to full magazine size
+        int ammoToReload = Mathf.Min(neededAmmo, reserveAmmo);
+
+        // ammo goes from reserve to current
+        currentAmmo += ammoToReload;
+        reserveAmmo -= ammoToReload;
+
         isReloading = false;
         Debug.Log($"{weaponName} reloaded.");
     }

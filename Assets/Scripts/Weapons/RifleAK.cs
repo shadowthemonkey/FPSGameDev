@@ -5,7 +5,8 @@ public class RifleAK : Weapon
     protected override void InitializeWeaponStats()
     {
         weaponName = "AK-47";
-        maxAmmo = 30;
+        magSize = 30;
+        reserveAmmo = 90;
         fireMode = FireMode.FullAuto;
         fireRate = 10f; // per second, so this matches the 600rpm of the ak in cs2
         reloadTime = 2.5f;

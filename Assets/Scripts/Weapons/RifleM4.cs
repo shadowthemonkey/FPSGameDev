@@ -5,7 +5,8 @@ public class RifleM4 : Weapon
     protected override void InitializeWeaponStats()
     {
         weaponName = "M4A4";
-        maxAmmo = 30;
+        magSize = 30;
+        reserveAmmo = 90;
         fireMode = FireMode.FullAuto;
         fireRate = 11.1f; // m4 has an rpm of 666
         reloadTime = 2.3f;

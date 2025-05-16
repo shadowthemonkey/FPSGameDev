@@ -7,7 +7,8 @@ public class Knife : Weapon
     protected override void InitializeWeaponStats()
     {
         weaponName = "Knife";
-        maxAmmo = 1; // never spent, just a placeholder for the GUI for now
+        magSize = 1; // never spent, just a placeholder for the GUI for now
+        reserveAmmo = 1;
         fireMode = FireMode.FullAuto; // you can hold left click and keep swinging
         fireRate = 1.5f;
         reloadTime = 0f; // no reloading needed since knife

@@ -5,7 +5,8 @@ public class RifleAWP : Weapon
     protected override void InitializeWeaponStats()
     {
         weaponName = "AWP";
-        maxAmmo = 10;
+        magSize = 10;
+        reserveAmmo = 30;
         fireMode = FireMode.Sniper;
         fireRate = 0.68f; //cs2 awp has an rpm of 41
         reloadTime = 3.5f;
