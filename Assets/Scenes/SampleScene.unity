@@ -1440,7 +1440,7 @@ RectTransform:
   m_GameObject: {fileID: 697811612}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 174249104}
@@ -2983,6 +2983,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f3074934-2b04-48bb-89c6-070bceff7a67
     m_ActionName: gameplay/Buy
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1055692043}
+        m_TargetAssemblyTypeName: PlayerInputs, Assembly-CSharp
+        m_MethodName: OnZoom
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2ed0f468-8e76-49bf-ac43-ac3fe330b856
+    m_ActionName: 'gameplay/Zoom[/Mouse/rightButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: gameplay
@@ -3122,7 +3138,7 @@ MonoBehaviour:
   uspPrefab: {fileID: 4116202775237709544, guid: 0b3e9ebba26ccfa428e3f92aa7e1ae59, type: 3}
   deaglePrefab: {fileID: 1717330374786805219, guid: e6fb7a78a762d6c41a94d5d38ce0ffbc, type: 3}
   akPrefab: {fileID: 6735182961639496764, guid: e60065ba5acc1e34eaf098f3ea155589, type: 3}
-  m4Prefab: {fileID: 0}
+  m4Prefab: {fileID: 3911276697670075793, guid: 2806a53b71ea8d244909780492070b02, type: 3}
   awpPrefab: {fileID: 984669716670007235, guid: a4cec2096fc2f4c4f872f7bc31483338, type: 3}
   shotgunPrefab: {fileID: 0}
   weaponHolder: {fileID: 396596591}
@@ -5431,7 +5447,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy M4A1-s
+  m_text: Buy M4A4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
