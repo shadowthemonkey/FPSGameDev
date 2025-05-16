@@ -19,11 +19,13 @@ public class WeaponManager : MonoBehaviour
 
     private Weapon currentWeapon;
     [SerializeField] private Transform firePoint;
-
+    [SerializeField] private Camera playerCamera;
+    public UnityEngine.UI.Image scopeImageUI;
     public float MovementSpeedMultiplier { get; private set; }
 
     // accessor made for GUI access
     public Weapon GetCurrentWeapon() => currentWeapon;
+    public UnityEngine.UI.Image GetScopeImage() => scopeImageUI;
 
     private void Start()
     {
@@ -33,6 +35,9 @@ public class WeaponManager : MonoBehaviour
         meleeWeapon = InstantiateWeapon(knifePrefab);
 
         SetSecondary(); // start with pistol, since you don't have primary
+
+        if (playerCamera == null)
+            playerCamera = Camera.main;
     }
 
     private Weapon InstantiateWeapon(GameObject prefab)
@@ -40,6 +45,9 @@ public class WeaponManager : MonoBehaviour
         GameObject weaponInstance = Instantiate(prefab, weaponHolder); // place it in holder
         Weapon weaponComponent = weaponInstance.GetComponent<Weapon>();
         weaponComponent.firePoint = firePoint; // assign player camera as firePoint
+
+        weaponComponent.weaponManager = this;
+
         return weaponComponent;
     }
 
@@ -56,6 +64,14 @@ public class WeaponManager : MonoBehaviour
         if (currentWeapon != null)
         {
             currentWeapon.Reload();
+        }
+    }
+
+    public void Scope()
+    {
+        if (currentWeapon != null)
+        {
+            currentWeapon.ToggleScope();
         }
     }
 

@@ -72,14 +72,14 @@ public class PlayerInputs : MonoBehaviour
     {
         if (UIManager.IsBuyMenuOpen) return;
 
-        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.SemiAuto)
+        if (weaponManager.GetCurrentWeapon().fireMode == FireMode.SemiAuto || weaponManager.GetCurrentWeapon().fireMode == FireMode.Sniper)
         {
             if (context.performed)
             {
                 weaponManager?.Shoot();
             }
         }
-        else if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto || weaponManager.GetCurrentWeapon().fireMode == FireMode.Sniper)
+        else if (weaponManager.GetCurrentWeapon().fireMode == FireMode.FullAuto)
         {
             // logic for semi auto and sniper are basically the same
             if (context.performed)
@@ -95,13 +95,14 @@ public class PlayerInputs : MonoBehaviour
 
     public void OnZoom(InputAction.CallbackContext context)
     {
+        // can't zoom in if in buy menu
         if (UIManager.IsBuyMenuOpen) return;
-
+        // can't scope in on non-snipers
         if (weaponManager.GetCurrentWeapon().fireMode == FireMode.Sniper)
         {
             if (context.performed)
             {
-                weaponManager?.Shoot();
+                weaponManager?.Scope();
             }
         }
     }

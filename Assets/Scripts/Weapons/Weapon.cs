@@ -30,6 +30,17 @@ public abstract class Weapon : MonoBehaviour
     
     public Transform firePoint; // currently uses the camera as the origin for raycast rays
     protected PlayerLook playerLook;
+    public Camera playerCamera;
+
+    // sniper zoom behaviour
+    protected bool isScoped = false;
+    protected int zoomLevel = 0; // goes between 0 to 2 for the 2 different scope levels
+    //public Sprite scopeOverlay;
+    private float defaultFOV;
+    private float[] zoomLevels = {30f, 15f};
+
+    public WeaponManager weaponManager;
+
 
     // getter methods to access ammo count and weapon name for GUI
     public string GetWeaponName() => weaponName;
@@ -41,6 +52,13 @@ public abstract class Weapon : MonoBehaviour
         InitializeWeaponStats();
         currentAmmo = maxAmmo;
         playerLook = FindFirstObjectByType<PlayerLook>();
+
+        // cache original field of view before scoped
+        if (playerCamera == null)
+            playerCamera = Camera.main;
+
+        defaultFOV = playerCamera.fieldOfView;
+
     }
 
     protected virtual void Update()
@@ -185,6 +203,35 @@ public abstract class Weapon : MonoBehaviour
         if (playerLook != null)
         {
             playerLook.ApplyRecoil(new Vector2(sprayOffset.x / 2, sprayOffset.y / 2));
+        }
+    }
+
+    public virtual void ToggleScope()
+    {
+        UnityEngine.UI.Image scopeOverlay = weaponManager.GetScopeImage();
+        // 0 = not scoped, 1 = scoped level 1, 2 = scoped level 2
+        zoomLevel++;
+        // zoomed past level 2, unscope
+        if (zoomLevel > 2)
+        {
+            zoomLevel = 0;
+            isScoped = false;
+            playerCamera.fieldOfView = defaultFOV;
+            if (scopeOverlay != null)
+                scopeOverlay.enabled = false;
+        }
+        else
+        {
+            // zoom will be 1 or 2
+            isScoped = true;
+            // if zoomlevel is 1, then we are 1 scope in, if 2, then we are 2
+            float zoom = zoomLevel == 1 ? zoomLevels[0] : zoomLevels[1];
+            playerCamera.fieldOfView = zoom;
+            if (scopeOverlay != null)
+            {
+                scopeOverlay.enabled = true;
+                //Debug.Log("Scope image enabled: " + scopeOverlay.enabled);
+            }
         }
     }
 
